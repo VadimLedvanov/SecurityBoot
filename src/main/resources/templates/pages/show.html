@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Пользователь</title>
+</head>
+<body>
+    <h1>Страница пользователя</h1>
+    id:
+    <p th:text="${user.getId()}"></p>
+    name:
+    <p th:text="${user.getName()}"></p>
+    age:
+    <p th:text="${user.getAge()}"></p>
+    password:
+    <p th:text="${user.getPassword()}"></p>
+    role:
+    <div th:each="role : ${user.getRoles()}">
+        <span th:utext="${role.getName()}"></span>
+    </div>
+
+    <form th:method="post" th:action="@{/admin/user}">
+        <input type="hidden" name="id" th:value="${user.getId()}">
+        <input type="submit" value="Удалить">
+    </form>
+    <hr>
+
+    <a th:href="@{/admin/user/edit(id=${user.getId()})}">Редактировать</a>
+    <a th:href="@{/logout}">Выход</a>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Creating new User</title>
+</head>
+<body>
+    <h1>Создание нового пользователя</h1>
+
+    <form th:method="POST" th:action="@{/admin/users}" th:object="${user}">
+        <label for="name">Имя</label>
+        <input type="text" th:field="*{name}" id="name" required>
+        <br>
+        <label for="age">Возраст</label>
+        <input type="text" th:field="*{age}" id="age" required>
+        <br>
+        <br>
+        <label for="age">Пароль</label>
+        <input type="text" th:field="*{password}" id="password" required>
+        <br>
+        <input type="submit" value="Создать">
+    </form>
+    <a th:href="@{/logout}">Выход</a>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Страница пользователя</h1>
+<p th:text="${user.getId()}"></p>
+<p th:text="${user.getName()}"></p>
+<p th:text="${user.getAge()}"></p>
+<p th:each="role : ${user.getRoles()}">
+    <span th:text="${role.getName()}"></span>
+</p>
+
+<a th:href="@{/logout}">Выход</a>
+
+</body>
+</html>

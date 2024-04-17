@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование</title>
+</head>
+<body>
+    <h1>Редактирование пользователя</h1>
+    <form th:method="POST" th:action="@{/admin/user/edit}" th:object="${user}">
+        <input type="hidden" name="id" th:value="${user.getId()}">
+        <label for="name">Имя</label>
+        <input type="text" th:field="*{name}" id="name" required>
+        <br>
+        <lable for="age">Возраст</lable>
+        <input type="text" th:field="*{age}" id="age" required>
+        <br>
+        <input type="submit" value="Изменить!">
+    </form>
+    <a th:href="@{/logout}">Выход</a>
+</body>
+</html>
