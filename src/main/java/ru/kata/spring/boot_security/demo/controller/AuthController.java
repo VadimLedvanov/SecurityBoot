@@ -5,25 +5,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import ru.kata.spring.boot_security.demo.dao.PeopleRepository;
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.service.UserService;
-
-import java.util.ArrayList;
-import java.util.List;
+import ru.kata.spring.boot_security.demo.service.AdminService;
 
 
 @Controller
 public class AuthController {
 
-    private final UserService userService;
-
+    private final AdminService adminService;
 
     @Autowired
-    public AuthController(UserService userService) {
-        this.userService = userService;
+    public AuthController(AdminService adminService) {
+        this.adminService = adminService;
     }
 
     @GetMapping("/login")
@@ -37,7 +30,7 @@ public class AuthController {
 
     @PostMapping("/registration")
     public String perfomRegistration(@ModelAttribute("person") User user) {
-        userService.addUser(user);
+        adminService.save(user);
         return "redirect:/auth/login";
     }
 }

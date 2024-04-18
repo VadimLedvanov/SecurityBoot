@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.controller;
 
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,20 +7,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.kata.spring.boot_security.demo.model.Role;
-import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.service.UserService;
 
+import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.AdminService;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
+
 
 @Controller
 public class AdminController {
 
-    private final UserService userService;
+    private final AdminService adminService;
+
     @Autowired
-    public AdminController(UserService userService) {
-        this.userService = userService;
+    public AdminController(AdminService adminService) {
+        this.adminService = adminService;
     }
 
     @GetMapping("/admin")
@@ -31,7 +31,7 @@ public class AdminController {
 
     @GetMapping("/admin/users")
     public String allUsersPage(Model model) {
-        List<User> list = userService.getAllUsers();
+        List<User> list = adminService.findAll();
         model.addAttribute("users", list);
         return "pages/index";
     }
@@ -39,18 +39,19 @@ public class AdminController {
     @GetMapping("admin/user")
     public String show(@RequestParam("id") Long id,
                        Model model) {
-        User user = userService.getUser(id);
-        if (user == null) {
+        Optional<User> user = adminService.findById(id);
+
+        if (user.isEmpty()) {
             return "pages/noUser";
         }
 
-        model.addAttribute("user", user);
+        model.addAttribute("user", user.get());
         return "pages/show";
     }
 
     @PostMapping("/admin/user")
     public String deleteUser(@RequestParam("id") Long id) {
-        userService.deleteUser(id);
+        adminService.deleteById(id);
         return "redirect:/admin/users";
     }
 
@@ -63,31 +64,27 @@ public class AdminController {
 
     @PostMapping("/admin/users")
     public String create(@ModelAttribute("user") User user) {
-        Role role = new Role();
-        role.setName("ROLE_USER");
-        user.setRole(Set.of(role));
-
-        userService.addUser(user);
+        adminService.save(user);
         return "redirect:/admin/users";
     }
 
     @GetMapping("/admin/user/edit")
     public String editUser(@RequestParam("id") Long id,
                            Model model) {
-        User user = userService.getUser(id);
+        Optional<User> user = adminService.findById(id);
 
-        if (user == null) {
+        if (user.isEmpty()) {
             return "pages/noUser";
         }
 
-        model.addAttribute("user", user);
+        model.addAttribute("user", user.get());
         return "pages/edit";
     }
 
     @PostMapping("/admin/user/edit")
     public String update(@ModelAttribute("user") User user,
                          @ModelAttribute("id") Long id) {
-        userService.changeUser(id, user);
+        adminService.update(user);
         return "redirect:/admin/users";
     }
 }
