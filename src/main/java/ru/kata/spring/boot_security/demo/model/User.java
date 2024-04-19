@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "persons")
@@ -40,6 +41,7 @@ public class User implements UserDetails {
     public Set<Role> getRoles() {
         return roles;
     }
+
 
     public void setRole(Set<Role> roles) {
         this.roles = roles;

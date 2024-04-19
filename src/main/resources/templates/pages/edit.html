@@ -14,6 +14,19 @@
         <lable for="age">Возраст</lable>
         <input type="text" th:field="*{age}" id="age" required>
         <br>
+        <lable for="password">Пароль</lable>
+        <input type="text" name="password" th:value="${user.getPassword()}">
+        <br>
+        <label>Роли:</label>
+
+        <br>
+        <input type="checkbox" id="role_user" name="selectedRoles" th:value="2">
+        <label for="role_user">ROLE_USER</label>
+        <br>
+        <input type="checkbox" id="role_admin" name="selectedRoles" th:value="1">
+        <label for="role_admin">ROLE_ADMIN</label>
+        <br>
+
         <input type="submit" value="Изменить!">
     </form>
     <a th:href="@{/logout}">Выход</a>

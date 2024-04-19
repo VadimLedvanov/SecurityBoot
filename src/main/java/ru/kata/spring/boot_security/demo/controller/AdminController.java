@@ -8,10 +8,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.AdminService;
+import ru.kata.spring.boot_security.demo.service.AdminServiceImpl;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -83,8 +89,9 @@ public class AdminController {
 
     @PostMapping("/admin/user/edit")
     public String update(@ModelAttribute("user") User user,
-                         @ModelAttribute("id") Long id) {
-        adminService.update(user);
+                         @RequestParam(value = "selectedRoles", required = false)
+                         List<Long> selectedRoleId) {
+        adminService.update(user, selectedRoleId);
         return "redirect:/admin/users";
     }
 }

@@ -14,18 +14,18 @@ import ru.kata.spring.boot_security.demo.model.User;
 @Service
 public class PersonDetailsService implements UserDetailsService {
 
-    private final AdminService adminService;
+    private final AdminServiceImpl adminServiceImpl;
 
     @Autowired
-    public PersonDetailsService(AdminService adminService) {
-        this.adminService = adminService;
+    public PersonDetailsService(AdminServiceImpl adminServiceImpl) {
+        this.adminServiceImpl = adminServiceImpl;
     }
 
 
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User person =  adminService.findByUsername(username);
+        User person =  adminServiceImpl.findByUsername(username);
 
         if (person == null) {
             throw new UsernameNotFoundException("User not found!");

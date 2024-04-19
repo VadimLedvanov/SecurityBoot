@@ -7,8 +7,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.kata.spring.boot_security.demo.service.PersonDetailsService;
 
 @Configuration
@@ -16,12 +16,14 @@ import ru.kata.spring.boot_security.demo.service.PersonDetailsService;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SuccessUserHandler successUserHandler;
     private final PersonDetailsService personDetailsService;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, PersonDetailsService personDetailsService) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, PersonDetailsService personDetailsService, PasswordEncoder passwordEncoder) {
         this.successUserHandler = successUserHandler;
         this.personDetailsService = personDetailsService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -43,11 +45,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(personDetailsService);
-    }
+        auth.userDetailsService(personDetailsService)
+                .passwordEncoder(passwordEncoder.bCryptPasswordEncoder());
 
-    @Bean
-    public PasswordEncoder getPasswordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
     }
 }
