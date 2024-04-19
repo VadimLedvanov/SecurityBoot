@@ -46,9 +46,18 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Transactional
-    public void save(User user) {
-        Role roleUser = roleRepository.findByName("ROLE_USER");
-        user.setRole((Set.of(roleUser)));
+    public void save(User user, List<Long> selectedRoleId) {
+        if (selectedRoleId == null) {
+            selectedRoleId = new ArrayList<>();
+        }
+
+        Set<Role> selectedRoles = new HashSet<>();
+        for (Long roleId : selectedRoleId) {
+            Role role = roleRepository.findById(roleId).get();
+            selectedRoles.add(role);
+        }
+
+        user.setRole(selectedRoles);
         user.setPassword(passwordEncoder.bCryptPasswordEncoder().encode(user.getPassword()));
         userRepository.save(user);
     }

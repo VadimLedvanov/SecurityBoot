@@ -18,6 +18,17 @@
         <label for="age">Пароль</label>
         <input type="text" th:field="*{password}" id="password" required>
         <br>
+
+        <label>Назначить роли:</label>
+
+        <br>
+        <input type="checkbox" id="role_user" name="selectedRoles" th:value="2">
+        <label for="role_user">ROLE_USER</label>
+        <br>
+        <input type="checkbox" id="role_admin" name="selectedRoles" th:value="1">
+        <label for="role_admin">ROLE_ADMIN</label>
+        <br>
+
         <input type="submit" value="Создать">
     </form>
     <a th:href="@{/logout}">Выход</a>

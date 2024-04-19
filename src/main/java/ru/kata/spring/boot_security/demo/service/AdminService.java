@@ -17,7 +17,7 @@ public interface AdminService {
     void deleteById(Long id);
 
     @Transactional
-    void save(User user);
+    void save(User user, List<Long> selectedRoleId);
 
     @Transactional
     void update(User user, List<Long> selectedRoleId);
